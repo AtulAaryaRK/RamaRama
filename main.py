@@ -4,15 +4,15 @@ from flask import Flask, render_template, request, redirect, url_for, send_file
 from werkzeug.utils import secure_filename
 
 
-app = Flask(__name__)
+main = Flask(__name__)
 
 
-@app.route('/')
+@main.route('/')
 def upload_form():
     return render_template('upload.html')
 
 
-@app.route('/', methods=['POST'])
+@main.route('/', methods=['POST'])
 def upload_video():
     file = request.files['file']
     filename = secure_filename(file.filename)
@@ -31,7 +31,7 @@ def upload_video():
     except:
         print('Completed reading all the frames  from the video .')
 
-    @app.route('/download')
+    @main.route('/download')
     def download_file():
         converted_video_path = "static/blackandwhite.mp4"
         return send_file(converted_video_path , as_attachment=True)
@@ -39,7 +39,7 @@ def upload_video():
     return render_template('upload.html', filename=filename)
 
 
-@app.route('/display/<filename>')
+@main.route('/display/<filename>')
 def display_video(filename):
     return redirect(url_for('static', filename=filename))
 
